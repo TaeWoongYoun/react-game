@@ -1,73 +1,73 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Matter from "matter-js";
 
-const FRUITS = [  
+const FRUITS = [
     { 
-        radius: 25,
-        color: "#FF6B6B", 
-        borderColor: "#FF5252",
-        score: 1, 
-        name: "체리",
-        label: "🍒"
-    },   
-    { 
-        radius: 35, 
-        color: "#FF8787", 
-        borderColor: "#FF6B6B",
-        score: 2, 
-        name: "딸기",
-        label: "🍓"
-    },   
-    { 
-        radius: 45, 
-        color: "#FFE066", 
-        borderColor: "#FFD43B",
-        score: 3, 
-        name: "레몬",
-        label: "🍋"
-    },   
-    { 
-        radius: 55, 
-        color: "#A8E6CF", 
-        borderColor: "#8CD3B6",
-        score: 4, 
-        name: "키위",
-        label: "🥝"
-    },   
-    { 
-        radius: 65, 
-        color: "#FFB94E", 
-        borderColor: "#FFA726",
-        score: 5, 
-        name: "오렌지",
-        label: "🍊"
-    },
-    { 
-        radius: 75, 
-        color: "#FF6B6B", 
-        borderColor: "#FF5252",
-        score: 6, 
-        name: "사과",
-        label: "🍎"
-    },
-    { 
-        radius: 85, 
-        color: "#C3E88D", 
-        borderColor: "#AED581",
-        score: 7, 
-        name: "배",
-        label: "🍐"
-    },
-    { 
-        radius: 95, 
+        radius: 15, 
         color: "#82AAFF", 
         borderColor: "#64B5F6",
-        score: 8, 
+        score: 1, 
         name: "블루베리",
         label: "🫐"
     },
     { 
-        radius: 105, 
+        radius: 20,
+        color: "#FF6B6B", 
+        borderColor: "#FF5252",
+        score: 2, 
+        name: "체리",
+        label: "🍒"
+    },   
+    { 
+        radius: 30, 
+        color: "#FF8787", 
+        borderColor: "#FF6B6B",
+        score: 3, 
+        name: "딸기",
+        label: "🍓"
+    },   
+    { 
+        radius: 35, 
+        color: "#FFE066", 
+        borderColor: "#FFD43B",
+        score: 4, 
+        name: "레몬",
+        label: "🍋"
+    },   
+    { 
+        radius: 40, 
+        color: "#A8E6CF", 
+        borderColor: "#8CD3B6",
+        score: 5, 
+        name: "키위",
+        label: "🥝"
+    },   
+    { 
+        radius: 50, 
+        color: "#FFB94E", 
+        borderColor: "#FFA726",
+        score: 6, 
+        name: "오렌지",
+        label: "🍊"
+    },
+    { 
+        radius: 60, 
+        color: "#FF6B6B", 
+        borderColor: "#FF5252",
+        score: 7, 
+        name: "사과",
+        label: "🍎"
+    },
+    { 
+        radius: 70, 
+        color: "#C3E88D", 
+        borderColor: "#AED581",
+        score: 8, 
+        name: "배",
+        label: "🍐"
+    },
+    { 
+        radius: 80, 
         color: "#FFCCBC", 
         borderColor: "#FFAB91",
         score: 9, 
@@ -75,7 +75,7 @@ const FRUITS = [
         label: "🍑"
     },
     { 
-        radius: 115, 
+        radius: 100, 
         color: "#FF9B9B", 
         borderColor: "#FF8383",
         score: 10, 
