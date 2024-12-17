@@ -1,17 +1,87 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Matter from "matter-js";
 
 const FRUITS = [  
-    { radius: 25, color: "#ff7c7c", score: 1, name: "체리" },   // 크기 증가
-    { radius: 35, color: "#ff9f71", score: 2, name: "딸기" },   
-    { radius: 45, color: "#ffd93d", score: 3, name: "레몬" },   
-    { radius: 55, color: "#95d5b2", score: 4, name: "키위" },   
-    { radius: 65, color: "#ff8364", score: 5, name: "오렌지" }, 
-    { radius: 75, color: "#ff6b6b", score: 6, name: "사과" },   
-    { radius: 85, color: "#c0eb75", score: 7, name: "배" },    
-    { radius: 95, color: "#87ceeb", score: 8, name: "블루베리" }, 
-    { radius: 105, color: "#ffb4a2", score: 9, name: "복숭아" }, 
-    { radius: 115, color: "#ff8ba7", score: 10, name: "수박" }  
+    { 
+        radius: 25,
+        color: "#FF6B6B", 
+        borderColor: "#FF5252",
+        score: 1, 
+        name: "체리",
+        label: "🍒"
+    },   
+    { 
+        radius: 35, 
+        color: "#FF8787", 
+        borderColor: "#FF6B6B",
+        score: 2, 
+        name: "딸기",
+        label: "🍓"
+    },   
+    { 
+        radius: 45, 
+        color: "#FFE066", 
+        borderColor: "#FFD43B",
+        score: 3, 
+        name: "레몬",
+        label: "🍋"
+    },   
+    { 
+        radius: 55, 
+        color: "#A8E6CF", 
+        borderColor: "#8CD3B6",
+        score: 4, 
+        name: "키위",
+        label: "🥝"
+    },   
+    { 
+        radius: 65, 
+        color: "#FFB94E", 
+        borderColor: "#FFA726",
+        score: 5, 
+        name: "오렌지",
+        label: "🍊"
+    },
+    { 
+        radius: 75, 
+        color: "#FF6B6B", 
+        borderColor: "#FF5252",
+        score: 6, 
+        name: "사과",
+        label: "🍎"
+    },
+    { 
+        radius: 85, 
+        color: "#C3E88D", 
+        borderColor: "#AED581",
+        score: 7, 
+        name: "배",
+        label: "🍐"
+    },
+    { 
+        radius: 95, 
+        color: "#82AAFF", 
+        borderColor: "#64B5F6",
+        score: 8, 
+        name: "블루베리",
+        label: "🫐"
+    },
+    { 
+        radius: 105, 
+        color: "#FFCCBC", 
+        borderColor: "#FFAB91",
+        score: 9, 
+        name: "복숭아",
+        label: "🍑"
+    },
+    { 
+        radius: 115, 
+        color: "#FF9B9B", 
+        borderColor: "#FF8383",
+        score: 10, 
+        name: "수박",
+        label: "🍉"
+    }
 ];
 
 const MOVE_SPEED = 15;
@@ -25,18 +95,14 @@ export default function WatermelonGame() {
   const engineRef = useRef(null);
   const renderRef = useRef(null);
   const runnerRef = useRef(null);
-  
+
+  const [fruits, setFruits] = useState([]);
   const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(() => {
-    const saved = localStorage.getItem('watermelon-high-score');
-    return saved ? parseInt(saved) : 0;
-  });
   const [gameOver, setGameOver] = useState(false);
   const [nextFruit, setNextFruit] = useState(0);
   const [canDrop, setCanDrop] = useState(true);
   const [position, setPosition] = useState(310);
 
-  // 게임 초기화
   useEffect(() => {
     const Engine = Matter.Engine;
     const Render = Matter.Render;
@@ -44,13 +110,11 @@ export default function WatermelonGame() {
     const Bodies = Matter.Bodies;
     const Events = Matter.Events;
 
-    // 엔진 생성
     engineRef.current = Engine.create({
       enableSleeping: false,
       gravity: { x: 0, y: 1.5 }
     });
 
-    // 렌더러 설정
     renderRef.current = Render.create({
       element: containerRef.current,
       engine: engineRef.current,
@@ -63,7 +127,6 @@ export default function WatermelonGame() {
       }
     });
 
-    // 벽 생성
     const walls = [
       Bodies.rectangle(15, 425, 30, 850, {
         isStatic: true,
@@ -87,7 +150,20 @@ export default function WatermelonGame() {
 
     World.add(engineRef.current.world, walls);
 
-    // 충돌 감지
+    Events.on(engineRef.current, 'afterUpdate', () => {
+      const bodies = Matter.Composite.allBodies(engineRef.current.world);
+      const currentFruits = bodies
+        .filter(body => body.size !== undefined)
+        .map(body => ({
+          id: body.id,
+          x: body.position.x,
+          y: body.position.y,
+          size: body.size,
+          angle: body.angle
+        }));
+      setFruits(currentFruits);
+    });
+
     Events.on(engineRef.current, 'collisionStart', (event) => {
       event.pairs.forEach((collision) => {
         const bodyA = collision.bodyA;
@@ -122,9 +198,10 @@ export default function WatermelonGame() {
             frictionAir: 0.0003,
             density: 0.001,
             render: {
+              visible: true,
               fillStyle: newFruit.color,
-              strokeStyle: '#000',
-              lineWidth: 1
+              strokeStyle: newFruit.borderColor,
+              lineWidth: 4
             },
             size: newSize
           }
@@ -135,7 +212,6 @@ export default function WatermelonGame() {
       });
     });
 
-    // 게임 실행
     runnerRef.current = Matter.Runner.create();
     Matter.Runner.run(runnerRef.current, engineRef.current);
     Render.run(renderRef.current);
@@ -156,7 +232,6 @@ export default function WatermelonGame() {
     };
   }, []);
 
-  // 키보드 이벤트 처리
   useEffect(() => {
     const handleKeyPress = (e) => {
       if (gameOver) return;
@@ -178,9 +253,10 @@ export default function WatermelonGame() {
             frictionAir: 0.0003,
             density: 0.001,
             render: {
+              visible: true,
               fillStyle: fruit.color,
-              strokeStyle: '#000',
-              lineWidth: 1
+              strokeStyle: fruit.borderColor,
+              lineWidth: 4
             },
             size: nextFruit
           });
@@ -200,43 +276,51 @@ export default function WatermelonGame() {
   }, [position, canDrop, nextFruit, gameOver]);
 
   return (
-    <div className="watermelon-game" style={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      alignItems: 'center',
-      padding: '20px',
+    <div style={{
+      display: 'flex',
+      alignItems: 'flex-start',
+      justifyContent: 'center',
+      height: '100vh',
       backgroundColor: '#2c3e50',
-      minHeight: '100vh'
+      padding: '20px'
     }}>
-      <div className="game-container" style={{ 
+      <div style={{ 
         position: 'relative',
         backgroundColor: '#34495e',
         borderRadius: '20px',
         padding: '20px',
-        boxShadow: '0 0 20px rgba(0,0,0,0.3)'
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
+        maxWidth: '620px',
+        width: '100%',
+        marginTop: '50px'
       }}>
-        <div ref={containerRef} className="canvas-container">
-          <canvas ref={canvasRef}/>
-          
-          <div style={{
-            position: 'absolute',
-            top: '20px',
-            left: '0',
-            right: '0',
-            display: 'flex',
-            justifyContent: 'space-around',
-            padding: '10px'
-          }}>
-            <div style={{
-              backgroundColor: 'rgba(230,177,67,0.9)',
-              padding: '8px 15px',
-              borderRadius: '20px',
-              color: '#2c3e50',
-              fontWeight: 'bold'
-            }}>Score: {score}</div>
-          </div>
+        <div ref={containerRef} style={{ position: 'relative' }}>
+          <canvas ref={canvasRef} style={{ position: 'absolute' }}/>
 
-          {!gameOver && canDrop && (
+          {fruits.map(fruit => (
+            <div
+              key={fruit.id}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: FRUITS[fruit.size].radius * 2,
+                height: FRUITS[fruit.size].radius * 2,
+                backgroundColor: FRUITS[fruit.size].color,
+                border: `4px solid ${FRUITS[fruit.size].borderColor}`,
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: `${FRUITS[fruit.size].radius}px`,
+                transform: `translate(${fruit.x - FRUITS[fruit.size].radius}px, ${fruit.y - FRUITS[fruit.size].radius}px) rotate(${fruit.angle}rad)`
+              }}
+            >
+              {FRUITS[fruit.size].label}
+            </div>
+          ))}
+
+          {canDrop && !gameOver && (
             <div style={{
               position: 'absolute',
               top: `${DROP_HEIGHT - FRUITS[nextFruit].radius}px`,
@@ -244,11 +328,16 @@ export default function WatermelonGame() {
               width: `${FRUITS[nextFruit].radius * 2}px`,
               height: `${FRUITS[nextFruit].radius * 2}px`,
               backgroundColor: FRUITS[nextFruit].color,
+              border: `4px solid ${FRUITS[nextFruit].borderColor}`,
               borderRadius: '50%',
-              opacity: 0.5,
-              transition: 'left 0.1s',
-              border: '1px solid #000'
-            }}/>
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: `${FRUITS[nextFruit].radius}px`,
+              zIndex: 2
+            }}>
+              {FRUITS[nextFruit].label}
+            </div>
           )}
 
           {gameOver && (
@@ -262,7 +351,8 @@ export default function WatermelonGame() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              borderRadius: '15px'
+              borderRadius: '15px',
+              zIndex: 3
             }}>
               <div style={{
                 backgroundColor: '#34495e',
