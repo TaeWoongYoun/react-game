@@ -12,6 +12,9 @@ const MainPage = () => {
         <Link to="/rsp-game" className="game-button rsp-game-btn">
           가위바위보 게임
         </Link>
+        <Link to="/wm-game" className="game-button wm-game-btn">
+          수박 게임
+        </Link>
       </div>
     </div>
   );
