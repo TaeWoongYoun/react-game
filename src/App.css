@@ -47,6 +47,14 @@
   background-color: #059669;
 }
 
+.wm-game-btn {
+  background-color: #3b82f6;
+}
+
+.wm-game-btn:hover {
+  background-color: #2563eb;
+}
+
 /* styles/CardGame.css */
 .container {
   max-width: 800px;
