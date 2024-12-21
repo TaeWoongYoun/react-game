@@ -3,7 +3,7 @@ import Matter from "matter-js";
 
 const FRUITS = [
     { 
-        radius: 15, 
+        radius: 20, 
         color: "#82AAFF", 
         borderColor: "#64B5F6",
         score: 1, 
@@ -11,7 +11,7 @@ const FRUITS = [
         label: "🫐"
     },
     { 
-        radius: 20,
+        radius: 30,
         color: "#FF6B6B", 
         borderColor: "#FF5252",
         score: 2, 
@@ -19,66 +19,50 @@ const FRUITS = [
         label: "🍒"
     },   
     { 
-        radius: 30, 
+        radius: 50, 
         color: "#FF8787", 
         borderColor: "#FF6B6B",
         score: 3, 
         name: "딸기",
         label: "🍓"
-    },   
+    },
     { 
-        radius: 35, 
-        color: "#FFE066", 
-        borderColor: "#FFD43B",
-        score: 4, 
-        name: "레몬",
-        label: "🍋"
-    },   
-    { 
-        radius: 40, 
+        radius: 70, 
         color: "#A8E6CF", 
         borderColor: "#8CD3B6",
-        score: 5, 
+        score: 4, 
         name: "키위",
         label: "🥝"
     },   
     { 
-        radius: 50, 
+        radius: 90, 
         color: "#FFB94E", 
         borderColor: "#FFA726",
-        score: 6, 
+        score: 5, 
         name: "오렌지",
         label: "🍊"
     },
     { 
-        radius: 60, 
+        radius: 110, 
         color: "#FF6B6B", 
         borderColor: "#FF5252",
-        score: 7, 
+        score: 6, 
         name: "사과",
         label: "🍎"
     },
     { 
-        radius: 70, 
-        color: "#C3E88D", 
-        borderColor: "#AED581",
-        score: 8, 
-        name: "배",
-        label: "🍐"
-    },
-    { 
-        radius: 80, 
+        radius: 130, 
         color: "#FFCCBC", 
         borderColor: "#FFAB91",
-        score: 9, 
+        score: 7, 
         name: "복숭아",
         label: "🍑"
     },
     { 
-        radius: 100, 
+        radius: 200, 
         color: "#FF9B9B", 
         borderColor: "#FF8383",
-        score: 10, 
+        score: 8, 
         name: "수박",
         label: "🍉"
     }
