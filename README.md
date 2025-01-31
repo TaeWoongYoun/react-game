@@ -26,7 +26,6 @@ React로 만든 미니 게임 모음.
 ## 🛠️ 기술 스택
 
 - React
-- React Router DOM
 - JS
 - CSS
 
